@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			body {
+				padding:0px;
+				margin:0px;
+				background-color:rgb(46, 46, 46);
+				font-family: Arial, Helvetica, sans-serif;
+			}
+
+			#container {
+				padding:0px;
+				margin:10px auto;
+				width:500px;
+				border:1px solid white;
+			}
+
+			table {
+				padding: 0px;
+				margin: 10px;
+				border-collapse: collapse;
+				text-align: center;
+				width:480px;
+			}
+
+			.quest {
+				padding:5px;
+				margin:10px 0px;
+				background:rgb(70, 70, 70);
+				color:white;
+				border:0px;
+				width:350px;
+				height:25px;
+			}
+
+			.difficulty {
+				padding:0px;
+				margin:0px;
+				border:1px solid white;
+				width:100px;
+				height:23px;
+				color:white;
+				line-height:23px;
+				text-align: center;
+			}
+
+			#footer {
+				padding:0px;
+				margin:0px;
+				color:white;
+				font-size:12px;
+				width:100%;
+				text-align:center;
+			}
+		</style>
+	</head>
+
+	<body onload="load()">
+		<div id="container">
+			<table>
+				<tr>
+					<td><select id="0" class="quest" onchange="change(this)"><option selected>First Quest</option></select></td>
+					<td><div id="diff_0" class="difficulty"></div></td>
+				</tr>
+				<tr>
+					<td><select id="1" class="quest" onchange="change(this)"><option selected>Second Quest</option></select></td>
+					<td><div id="diff_1" class="difficulty"></div></td>
+				</tr>
+				<tr>
+					<td><select id="2" class="quest" onchange="change(this)"><option selected>Third Quest</option></select></td>
+					<td><div id="diff_2" class="difficulty"></div></td>
+				</tr>
+				<tr>
+					<td><select id="3" class="quest" onchange="change(this)"><option selected>Fourth Quest</option></select></td>
+					<td><div id="diff_3" class="difficulty"></div></td>
+				</tr>
+				<tr>
+					<td><select id="4" class="quest" onchange="change(this)"><option selected>Fifth Quest</option></select></td>
+					<td><div id="diff_4" class="difficulty"></div></td>
+				</tr>
+			</table>
+		</div>
+
+
+		<script>
+			const diff = [
+				["Very Slow", "#F00"],
+				["Slow", "#F55"],
+				["Average", "#00F"],
+				["Fast", "#0F0"],
+				["Very Fast", "#5F5"]
+			];
+
+			const quests = [
+				// Haven quests
+				["-------------------------------------------------", "", 0],
+				["Haven: Collect Red Antenna Piece", "Obtain 30 Red Antenna Pieces from Hunterizer Red.", -1],
+				["Haven: Collect Red Chipset Piece", "Obtain 50 Red Chipset Pieces from Modded Scaredroid.", 0],
+				["Haven: Collect Green Chipset Piece", "Obtain 50 Green Chipset Pieces from Modded Broken Android.", 0],
+				["Haven: Collect Blue Chipset Piece", "", -1],
+				["Haven: Defeat Hunterizer Red", "", -1],
+				["Haven: Defeat Repairoid", "", 1],
+				["Haven: Defeat Outer Guard EX", "", 0],
+				["Haven: Defeat Inner Guard EX", "", -1],
+				// Scrapyard
+				["-------------------------------------------------", "", 0],
+				["Scrapyard: Defeat Chaseroid Red", "", 0],
+				["Scrapyard: Defeat Chaseroid Blue", "", 0],
+				["Scrapyard: Defeat Hunterizer Blue", "", -1],
+				["Scrapyard: Deliver Blue Antenna Piece", "", -1],
+				["Scrapyard: Deliver Blue Android Scope", "", 0],
+				["Scrapyard: Repair", "", 0],
+				["Scrapyard: Free the Modded Scaredroid", "", 1],
+				["Scrapyard: Free the Modded Broken Android", "", 0],
+				["Scrapyard: Free the Modded Laseroid", "", 0],
+				// Missing Collect mission here
+				// Skyline
+				["-------------------------------------------------", "", 0],
+				["Skyline: Defeat Modded Buffroid", "", -2],
+				["Skyline: Defeat Salvoroid Red", "", 2],
+				["Skyline: Collect Pipe Piece", "", 1],
+				["Skyline: Free the Modded Deliverbot", "", -2],
+				["Skyline: Repair", "", -2],
+				["Skyline: Deliver Red Blind Shell", "", 2],
+				["Skyline: Deliver Prison Key Piece", "", -2],
+				// BH Deck
+				["-------------------------------------------------", "", 0],
+				["Black Heaven Deck: Defeat Salvoroid Blue", "", 2],
+				["Black Heaven Deck: Defeat Repairoid", "", 1],
+				["Black Heaven Deck: Defeat Demolishizer", "", 2],
+				["Black Heaven Deck: Collect Steel Drill", "", 2],
+				["Black Heaven Deck: Deliver Field Siren", "", 0],
+				["Black Heaven Deck: Deliver Blue Blind Shell", "", 2],
+				// BH Inside
+				["-------------------------------------------------", "", 0],
+				["Black Heaven Inside: Defeat Alloy Xenoroid DX", "", 1],
+				["Black Heaven Inside: Defeat Steel Xenoroid DX", "", 0],
+				["Black Heaven Inside: Defeat Scrap Xenoroid DX", "", -1],
+				["Black Heaven Inside: Defeat Alloy Xenoroid EX", "", 1],
+				["Black Heaven Inside: Defeat Steel Xenoroid EX", "", -1],
+				["Black Heaven Inside: Defeat Scrap Xenoroid EX", "", 0],
+				["Black Heaven Inside: Defeat Modded Megaroid", "", 2],
+				["Black Heaven Inside: Collect Internal Siren", "", -1],
+				["Black Heaven Inside: Collect Alloy ID Plate", "", 1],
+				["Black Heaven Inside: Collect Steel ID Plate", "", -1],
+				["Black Heaven Inside: Collect Scrap ID Plate", "", 0],
+				["Black Heaven Inside: Repair", "", 2],
+				["Black Heaven Inside: Deliver Alloy Xenoroid Chipset", "", 1],
+				["Black Heaven Inside: Deliver Steel Xenoroid Chipset", "", 0],
+				["Black Heaven Inside: Deliver Scrap Xenoroid Chipset", "", -1]
+				];
+
+			function load() {
+				for(var i = 0; i < 5; i++) {
+					var select = document.getElementById(i);
+					for(var o = 0; o < quests.length; o++) {
+						var opt = document.createElement('option');
+						opt.value = o;
+						opt.innerHTML = quests[o][0];
+						select.appendChild(opt);
+					}
+				}
+			}
+
+			function change(s) {
+				var id = "diff_" + s.id;
+				console.log(id);
+				var box = document.getElementById(id);
+				box.innerHTML = diff[quests[s.value][2] + 2][0];
+				box.style.backgroundColor = diff[quests[s.value][2] + 2][1];
+			}
+		</script>
+	</body>
+</html>
