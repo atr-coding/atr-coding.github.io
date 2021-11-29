@@ -16,47 +16,82 @@
 			#container {
 				padding:0px;
 				margin:10px auto;
-				width:500px;
+				width:545px;
 				border:1px solid rgb(119, 119, 119);
 			}
 
 			table {
 				padding: 0px;
-				margin: 10px;
+				margin: 0px;
 				border-collapse: collapse;
 				text-align: center;
-				width:480px;
+				/* border:1px solid rgb(119, 119, 119); */
+			}
+
+			table th {
+				padding:10px 0px;
+				color:white;
+				font-size:18px;
 			}
 
 			.quest {
 				padding:5px;
-				margin:10px 0px;
+				margin:10px;
 				background:rgb(70, 70, 70);
 				color:white;
 				border:0px;
-				width:350px;
+				width:400px;
 				height:25px;
 			}
 
 			.difficulty {
 				padding:0px;
-				margin:0px;
-				border:0px solid rgb(255, 255, 255);
+				margin:10px;
 				width:100px;
-				height:23px;
+				height:25px;
 				background-color:rgb(50, 50, 50);
 				color:rgb(75, 75, 75);
-				line-height:23px;
+				line-height:25px;
 				text-align: center;
 			}
 
-			#footer {
-				padding:0px;
+			#material_list {
+				padding:5px;
+				margin:10px;
+				margin-bottom:0px;
+				/* border:1px solid green; */
+			}
+
+			#material_list .header {
+				padding: 0px;
 				margin:0px;
 				color:white;
-				font-size:12px;
-				width:100%;
-				text-align:center;
+			}
+
+			.info {
+				padding:10px;
+				margin:15px 0px;
+				color:white;
+				text-align: center;
+				background-color:rgb(50, 50, 50);
+			}
+
+			#row_0 { display:block; }
+			#row_1 { display:block; }
+			#row_2 { display:block; }
+			#row_3 { display:block; }
+
+			#footer {
+				display:block;
+				padding:5px;
+				color:rgb(75, 75, 75);
+				font-size:11px;
+				text-align: center;
+			}
+
+			#footer a {
+				text-decoration: none;
+				color:rgb(75, 50, 75);
 			}
 		</style>
 	</head>
@@ -64,6 +99,7 @@
 	<body onload="load()">
 		<div id="container">
 			<table>
+				<th colspan="2">Scrapyard Weekly Reroll Helper</th>
 				<tr>
 					<td><select id="0" class="quest" onchange="change(this)"><option selected>First Quest</option></select></td>
 					<td><div id="diff_0" class="difficulty"></div></td>
@@ -81,6 +117,18 @@
 					<td><div id="diff_3" class="difficulty"></div></td>
 				</tr>
 			</table>
+
+			<div id="material_list">
+				<div class="header">Guide:</div>
+				<div id="row_0" class="info"></div>
+				<div id="row_1" class="info"></div>
+				<div id="row_2" class="info"></div>
+				<div id="row_3" class="info"></div>
+			</div>
+			
+			<div id="footer">
+				All information taken from <a href="https://docs.google.com/spreadsheets/d/1FJcMQHfhsDNsRQW_KhrmR3uyWmudv8e8Y_nY5uawKAg/edit#gid=0" target="_blank" rel="noopener noreferrer">"Scrapyard Weekly Reroll Guide 1.2"</a> and the sources provided therein.
+			</div>
 		</div>
 
 
@@ -96,60 +144,60 @@
 			const quests = [
 				// Haven quests
 				["-------------------------------------------------", "", 0],
-				["Haven: Collect Red Antenna Piece", "Obtain 30 Red Antenna Pieces from Hunterizer Red.", -1],
-				["Haven: Collect Red Chipset Piece", "Obtain 50 Red Chipset Pieces from Modded Scaredroid.", 0],
-				["Haven: Collect Green Chipset Piece", "Obtain 50 Green Chipset Pieces from Modded Broken Android.", 0],
-				["Haven: Collect Blue Chipset Piece", "", -1],
-				["Haven: Defeat Hunterizer Red", "", -1],
-				["Haven: Defeat Repairoid", "", 1],
-				["Haven: Defeat Outer Guard EX", "", 0],
-				["Haven: Defeat Inner Guard EX", "", -1],
+				["Haven: Collect Red Antenna Piece", "Obtain 30 Red Antenna Pieces from Hunterizer Red.<br />Talk to One-Eye in Haven.", -1],
+				["Haven: Collect Red Chipset Piece", "Obtain 50 Red Chipset Pieces from Modded Scaredroid.<br />Talk to One-Eye in Haven.", 0],
+				["Haven: Collect Green Chipset Piece", "Obtain 50 Green Chipset Pieces from Modded Broken Android.<br />Talk to One-Eye in Haven.", 0],
+				["Haven: Collect Blue Chipset Piece", "Obtain 20 Blue Chipset Pieces from Modded Laseroid.<br />Talk to One-Eye in Haven.", -1],
+				["Haven: Defeat Hunterizer Red", "Talk to Patrolbot in Scrapyard Hill 5.<br />Eliminate 200 Hunterizer Reds.<br />Talk to Patrolbot again.", -1],
+				["Haven: Defeat Repairoid", "Talk to Patrolbot in Skyline 1.<br />Eliminate 300 Repairoids.<br />Talk to Patrolbot again.", 1],
+				["Haven: Defeat Outer Guard EX", "Talk to Patrolbot in Black Heaven Entrance.<br />Eliminate 300 Outer Guard EXs.<br />Talk to Patrolbot again.", 0],
+				["Haven: Defeat Inner Guard EX", "Talk to Patrolbot in Black Heaven Junction 2.<br />Eliminate 200 Inner Guard EXs.<br />Talk to Patrolbot again.", -1],
 				// Scrapyard
 				["-------------------------------------------------", "", 0],
-				["Scrapyard: Defeat Chaseroid Red", "", 0],
-				["Scrapyard: Defeat Chaseroid Blue", "", 0],
-				["Scrapyard: Defeat Hunterizer Blue", "", -1],
-				["Scrapyard: Deliver Blue Antenna Piece", "", -1],
-				["Scrapyard: Deliver Blue Android Scope", "", 0],
-				["Scrapyard: Repair", "", 0],
-				["Scrapyard: Free the Modded Scaredroid", "", 1],
-				["Scrapyard: Free the Modded Broken Android", "", 0],
-				["Scrapyard: Free the Modded Laseroid", "", 0],
-				["Scrapyard: Collect Red Android Scopes", "", 0],
+				["Scrapyard: Defeat Chaseroid Red", "Eliminate 300 Chaseroid Reds.<br />Talk to Patrolbot in Scrapyard Hill 5.", 0],
+				["Scrapyard: Defeat Chaseroid Blue", "Eliminate 200 Chaseroid Blues.<br />Talk to Patrolbot in Scrapyard Hill 5.", 0],
+				["Scrapyard: Defeat Hunterizer Blue", "Eliminate 150 Hunterizer Blues.<br />Talk to Patrolbot in Scrapyard Hill 5.", -1],
+				["Scrapyard: Deliver Blue Antenna Piece", "Obtain 20 Blue Antenna Pieces from Hunterizer Blue.<br />Talk to Patrolbot in Skyline 1.", -1],
+				["Scrapyard: Deliver Blue Android Scope", "Obtain 30 Blue Android Scopes from Chaseroid Blue.<br />Talk to Patrolbot in Black Heaven Entrance.", 0],
+				["Scrapyard: Repair", "Obtain 50 Red Android Scopes from Chaseroid Red.<br />Click on Busted Surveillance Tower in Scrapyard Hill 4.<br />Talk to Patrolbot in Scrapyard Hill 5.", 0],
+				["Scrapyard: Free the Modded Scaredroid", "Eliminate 300 Modded Scaredroids.<br />Talk to Patrolbot in Scrapyard Hill 5.", 1],
+				["Scrapyard: Free the Modded Broken Android", "Eliminate 300 Modded Broken Androids.<br />Talk to Patrolbot in Scrapyard Hill 5.", 0],
+				["Scrapyard: Free the Modded Laseroid", "Eliminate 200 Modded Laseroids.<br />Talk to Patrolbot in Scrapyard Hill 5.", 0],
+				["Scrapyard: Collect Red Android Scopes", "Obtain 50 Red Android Scopes from Chaseroid Red.<br />Talk to Patrolbot in Scrapyard Hill 5.", 0],
 				// Skyline
 				["-------------------------------------------------", "", 0],
-				["Skyline: Defeat Modded Buffroid", "", -2],
-				["Skyline: Defeat Salvoroid Red", "", 2],
-				["Skyline: Collect Pipe Piece", "", 1],
-				["Skyline: Free the Modded Deliverbot", "", -2],
-				["Skyline: Repair", "", -2],
-				["Skyline: Deliver Red Blind Shell", "", 2],
-				["Skyline: Deliver Prison Key Piece", "", -2],
+				["Skyline: Defeat Modded Buffroid", "Eliminate 100 Modded Buffroids.<br />Talk to Patrolbot in Skyline 1.", -2],
+				["Skyline: Defeat Salvoroid Red", "Eliminate 12 Salvoroid Reds.<br />Talk to Patrolbot in Skyline 1.", 2],
+				["Skyline: Collect Pipe Piece", "Obtain 50 Pipe Pieces from Repairoid.<br />Talk to Patrolbot in Skyline 1.", 1],
+				["Skyline: Free the Modded Deliverbot", "Eliminate 100 Modded Deliverbots.<br />Talk to Patrolbot in Skyline 1.", -2],
+				["Skyline: Repair", "Obtain 10 Giant Steel Pieces from Modded Buffroid.<br />Click on Busted Surveillance Tower in Skyline Edge.<br />Talk to Patrolbot in Skyline 1.", -2],
+				["Skyline: Deliver Red Blind Shell", "Obtain 2 Red Blind Shells from Salvoroid Red.<br />Talk to Patrolbot in Scrapyard Hill 5.", 2],
+				["Skyline: Deliver Prison Key Piece", "Obtain 10 Prison Key Pieces from Modded Deliverbot.<br />Talk to Patrolbot in Black Heaven Entrance.", -2],
 				// BH Deck
 				["-------------------------------------------------", "", 0],
-				["Black Heaven Deck: Defeat Salvoroid Blue", "", 2],
-				["Black Heaven Deck: Defeat Repairoid", "", 1],
-				["Black Heaven Deck: Defeat Demolishizer", "", 2],
-				["Black Heaven Deck: Collect Steel Drill", "", 2],
-				["Black Heaven Deck: Deliver Field Siren", "", 0],
-				["Black Heaven Deck: Deliver Blue Blind Shell", "", 2],
+				["Black Heaven Deck: Defeat Salvoroid Blue", "Eliminate 12 Salvoroid Blues.<br />Talk to Patrolbot in Black Heaven Entrance.", 2],
+				["Black Heaven Deck: Defeat Repairoid", "Eliminate 300 Repairoids.<br />Talk to Patrolbot in Black Heaven Entrance.", 1],
+				["Black Heaven Deck: Defeat Demolishizer", "Eliminate 8 Demolishizers.<br />Talk to Patrolbot in Black Heaven Entrance.", 2],
+				["Black Heaven Deck: Collect Steel Drill", "Obtain 2 Steel Drills from Demolishizer.<br />Talk to Patrolbot in Black Heaven Entrance.", 2],
+				["Black Heaven Deck: Deliver Field Siren", "Obtain 50 Field Sirens from Outer Guard EX.<br />Talk to Patrolbot in Black Heaven Junction 2.", 0],
+				["Black Heaven Deck: Deliver Blue Blind Shell", "Obtain 2 Blue Blind Shells from Salvoroid Blue.<br />Talk to Patrolbot in Skyline 1.", 2],
 				// BH Inside
 				["-------------------------------------------------", "", 0],
-				["Black Heaven Inside: Defeat Alloy Xenoroid DX", "", 1],
-				["Black Heaven Inside: Defeat Steel Xenoroid DX", "", 0],
-				["Black Heaven Inside: Defeat Scrap Xenoroid DX", "", -1],
-				["Black Heaven Inside: Defeat Alloy Xenoroid EX", "", 1],
-				["Black Heaven Inside: Defeat Steel Xenoroid EX", "", -1],
-				["Black Heaven Inside: Defeat Scrap Xenoroid EX", "", 0],
-				["Black Heaven Inside: Defeat Modded Megaroid", "", 2],
-				["Black Heaven Inside: Collect Internal Siren", "", -1],
-				["Black Heaven Inside: Collect Alloy ID Plate", "", 1],
-				["Black Heaven Inside: Collect Steel ID Plate", "", -1],
-				["Black Heaven Inside: Collect Scrap ID Plate", "", 0],
-				["Black Heaven Inside: Repair", "", 2],
-				["Black Heaven Inside: Deliver Alloy Xenoroid Chipset", "", 1],
-				["Black Heaven Inside: Deliver Steel Xenoroid Chipset", "", 0],
-				["Black Heaven Inside: Deliver Scrap Xenoroid Chipset", "", -1]
+				["Black Heaven Inside: Defeat Alloy Xenoroid DX", "Eliminate 300 Alloy Xenoroid DXs.<br />Talk to Patrolbot in Black Heaven Junction 2.", 1],
+				["Black Heaven Inside: Defeat Steel Xenoroid DX", "Eliminate 300 Steel Xenoroid DXs.<br />Talk to Patrolbot in Black Heaven Junction 2.", 0],
+				["Black Heaven Inside: Defeat Scrap Xenoroid DX", "Eliminate 150 Scrap Xenoroid DXs.<br />Talk to Patrolbot in Black Heaven Junction 2.", -1],
+				["Black Heaven Inside: Defeat Alloy Xenoroid EX", "Eliminate 300 Alloy Xenoroid EXs.<br />Talk to Patrolbot in Black Heaven Junction 2.", 1],
+				["Black Heaven Inside: Defeat Steel Xenoroid EX", "Eliminate 100 Steel Xenoroid EXs.<br />Talk to Patrolbot in Black Heaven Junction 2.", -1],
+				["Black Heaven Inside: Defeat Scrap Xenoroid EX", "Eliminate 300 Scrap Xenoroid EXs.<br />Talk to Patrolbot in Black Heaven Junction 2.", 0],
+				["Black Heaven Inside: Defeat Modded Megaroid", "Eliminate 12 Modded Megaroids.<br />Talk to Patrolbot in Black Heaven Junction 2.", 2],
+				["Black Heaven Inside: Collect Internal Siren", "Obtain 30 Internal Sirens from Inner Guard EX.<br />Talk to Patrolbot in Black Heaven Junction 2.", -1],
+				["Black Heaven Inside: Collect Alloy ID Plate", "Obtain 50 Alloy ID Plates from Alloy Xenoroid EX.<br />Talk to Patrolbot in Black Heaven Junction 2.", 1],
+				["Black Heaven Inside: Collect Steel ID Plate", "Obtain 15 Steel ID Plates from Steel Xenoroid EX.<br />Talk to Patrolbot in Black Heaven Junction 2.", -1],
+				["Black Heaven Inside: Collect Scrap ID Plate", "Obtain 30 Scrap ID Plates from Scrap Xenoroid EX.<br />Talk to Patrolbot in Black Heaven Junction 2.", 0],
+				["Black Heaven Inside: Repair", "Obtain 2 Giant Light Bulbs from Modded Megaroid.<br />Click on Busted Surveillance Tower in Black Heaven Maze 4.<br />Talk to Patrolbot in Black Heaven Junction 2.", 2],
+				["Black Heaven Inside: Deliver Alloy Xenoroid Chipset", "Obtain 50 Alloy Xenoroid Chipsets from Alloy Xenoroid DX.<br />Talk to Patrolbot in Black Heaven Entrance.", 1],
+				["Black Heaven Inside: Deliver Steel Xenoroid Chipset", "Obtain 50 Steel Xenoroid Chipsets from Steel Xenoroid DX.<br />Talk to Patrolbot in Black Heaven Entrance.", 0],
+				["Black Heaven Inside: Deliver Scrap Xenoroid Chipset", "Obtain 20 Scrap Xenoroid Chipsets from Scrap Xenoroid DX.<br />Talk to Patrolbot in Black Heaven Entrance.", -1]
 				];
 
 			function load() {
@@ -170,6 +218,9 @@
 				var box = document.getElementById(id);
 				box.innerHTML = diff[quests[s.value][2] + 2][0];
 				box.style.backgroundColor = diff[quests[s.value][2] + 2][1];
+
+				var info = document.getElementById("row_" + s.id);
+				info.innerHTML = quests[s.value][1];
 			}
 		</script>
 	</body>
